@@ -34,7 +34,13 @@ public class FragmentA extends Fragment {
             String input = etCelcius.getText().toString();
 
             //stuur naar Fragment B
-            listener.onInputASent(input);
+            try {
+                input = etCelcius.getText().toString();
+                listener.onInputASent(input);
+            }catch (NumberFormatException e){
+                etCelcius.setError("Please enter a number");
+                return;
+            }
 
         });
 
@@ -44,6 +50,26 @@ public class FragmentA extends Fragment {
     //Ontvangt data van buitenaf (bvb als er in fragment B op "ok" wordt gedrukt
     public void updateCelcius(String input){
         etCelcius.setText(input);
+    }
+    public void updateCelcius(String input, char originTemperature){
+
+        Double convertedInput = 0.0;
+        convertedInput = Double.parseDouble(input);
+
+        switch(originTemperature){
+            case 'f': //If the origin is fahrenheit
+                convertedInput = (convertedInput -32)/1.8;
+                break;
+
+            case 'k': //if the origin is kelvin
+                convertedInput = convertedInput - 273.15;
+                break;
+        }
+
+        convertedInput = Math.round(convertedInput*100.0)/100.0;
+
+        etCelcius.setError(null);
+        etCelcius.setText(convertedInput.toString());
     }
 
     @Override

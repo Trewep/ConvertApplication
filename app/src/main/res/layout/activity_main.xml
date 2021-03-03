@@ -17,5 +17,9 @@
         android:id="@+id/layoutB"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+  <FrameLayout
+      android:id="@+id/layoutC"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
 
 </LinearLayout>

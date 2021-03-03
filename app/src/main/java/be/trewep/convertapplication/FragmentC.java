@@ -2,6 +2,7 @@ package be.trewep.convertapplication;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.NoCopySpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,16 +10,16 @@ import android.widget.EditText;
 
 import androidx.fragment.app.Fragment;
 
-public class FragmentB extends Fragment {
+public class FragmentC extends Fragment implements NoCopySpan {
 
-    public interface FragmentBListener{
-        void onInputBSent(String input);
+    public interface FragmentCListener {
+        void onInputCSent(String input);
     }
 
-    private EditText etFahrenheit;
-    private FragmentBListener listener;
+    private EditText etKelvin;
+    private FragmentCListener listener;
 
-    public FragmentB() {
+    public FragmentC() {
         // Required empty public constructor
     }
 
@@ -26,19 +27,19 @@ public class FragmentB extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_b, container, false);
+        View v = inflater.inflate(R.layout.fragment_c, container, false);
 
-        etFahrenheit = v.findViewById(R.id.et_fahrenheit);
-        v.findViewById(R.id.button_to_celcius).setOnClickListener(bv -> {
-            String input = etFahrenheit.getText().toString();
+        etKelvin = v.findViewById(R.id.et_kelvin);
+        v.findViewById(R.id.button_to_kelvin).setOnClickListener(bv -> {
+            String input = etKelvin.getText().toString();
 
             //stuur naar Fragment A
 
             try {
-                input = etFahrenheit.getText().toString();
-                listener.onInputBSent(input);
+                input = etKelvin.getText().toString();
+                listener.onInputCSent(input);
             } catch(NumberFormatException e){
-                etFahrenheit.setError("Please enter a number");
+                etKelvin.setError("Please enter a number");
                 return;
             }
 
@@ -48,36 +49,34 @@ public class FragmentB extends Fragment {
     }
 
     //Ontvangt data van buitenaf (bvb als er in fragment B op "ok" wordt gedrukt
-
-    public void updateFahrnheit(String input, char originTemperature){
+    public void updateKelvin(String input, char originTemperature) {
 
         Double convertedInput = 0.0;
         convertedInput = Double.parseDouble(input);
 
-        switch(originTemperature){
+        switch (originTemperature) {
             case 'c': //If the origin is celsius
-                convertedInput = convertedInput*1.8+32;
+                convertedInput = convertedInput + 273.15;
                 break;
 
-            case 'k': //if the origin is kelvin
-                convertedInput = (convertedInput-273.15)*1.8+32;
+            case 'f': //if the origin is fahrenheit
+                convertedInput = ((convertedInput - 32) / 1.8) + 273.15;
                 break;
         }
-
         convertedInput = Math.round(convertedInput*100.0)/100.0;
 
-
-        etFahrenheit.setError(null);
-        etFahrenheit.setText(convertedInput.toString());
+        etKelvin.setError(null);
+        etKelvin.setText(convertedInput.toString());
     }
+
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        if (context instanceof FragmentBListener){
-            listener = (FragmentBListener)context;
+        if (context instanceof FragmentCListener){
+            listener = (FragmentCListener)context;
         }else{
             throw new RuntimeException(
-                    String.format ("%s must implement FragmentAListener", context.toString())
+                    String.format ("%s must implement FragmentCListener", context.toString())
             );
         }
     }

@@ -8,18 +8,23 @@
     android:padding="16dp"
     tools:context=".FragmentA">
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Celcius"
+        android:layout_gravity="left"/>
     <EditText
         android:id="@+id/et_celcius"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="" />
+        android:text=""
+        android:inputType="numberDecimal"/>
 
     <Button
         android:id="@+id/button_to_fahrnheit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="To Fahrnheit"/>
+        android:text="To Fahrnheit &#38; Kelvin"/>
 
 </LinearLayout>
