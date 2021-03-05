@@ -10,16 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-public class FragmentA extends Fragment {
+public class FragmentTemperature extends Fragment {
 
-    public interface FragmentAListener{
-        void onInputASent(String input);
+    public interface FragmentListener {
+        void onInputSent(String input);
     }
 
-    private EditText etCelcius;
-    private FragmentAListener listener;
+    private EditText etTemp;
+    private FragmentListener listener;
 
-    public FragmentA() {
+    public FragmentTemperature() {
         // Required empty public constructor
     }
 
@@ -27,18 +27,18 @@ public class FragmentA extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_a, container, false);
+        View v = inflater.inflate(R.layout.fragment_temperature, container, false);
 
-        etCelcius = v.findViewById(R.id.et_celcius);
+        etTemp = v.findViewById(R.id.et_celcius);
         v.findViewById(R.id.button_to_fahrnheit).setOnClickListener(bv -> {
-            String input = etCelcius.getText().toString();
+            String input = etTemp.getText().toString();
 
-            //stuur naar Fragment B
+            //stuur naar Fragment
             try {
-                input = etCelcius.getText().toString();
-                listener.onInputASent(input);
+                input = etTemp.getText().toString();
+                listener.onInputSent(input);
             }catch (NumberFormatException e){
-                etCelcius.setError("Please enter a number");
+                etTemp.setError("Please enter a number");
                 return;
             }
 
@@ -46,10 +46,18 @@ public class FragmentA extends Fragment {
 
         return v;
     }
+    public void setOnListener(FragmentListener listener){
+        this.listener = listener;
+    }
 
+    public void updateTe (String Temp){
+        etTemp.setText(Temp);
+    }
+
+    /*
     //Ontvangt data van buitenaf (bvb als er in fragment B op "ok" wordt gedrukt
     public void updateCelcius(String input){
-        etCelcius.setText(input);
+        etTemp.setText(input);
     }
     public void updateCelcius(String input, char originTemperature){
 
@@ -68,15 +76,15 @@ public class FragmentA extends Fragment {
 
         convertedInput = Math.round(convertedInput*100.0)/100.0;
 
-        etCelcius.setError(null);
-        etCelcius.setText(convertedInput.toString());
+        etTemp.setError(null);
+        etTemp.setText(convertedInput.toString());
     }
 
     @Override
     public void onAttach(Context context){
         super.onAttach(context);
-        if (context instanceof FragmentAListener){
-            listener = (FragmentAListener)context;
+        if (context instanceof FragmentListener){
+            listener = (FragmentListener)context;
         }else{
             throw new RuntimeException(
                     String.format ("%s must implement FragmentAListener", context.toString())
@@ -90,6 +98,6 @@ public class FragmentA extends Fragment {
     public void onDetach(){
         super.onDetach();
         listener = null;
-    }
+    }*/
 
 }
